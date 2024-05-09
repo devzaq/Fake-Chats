@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:messages/api/apis.dart';
 import 'package:messages/helper/dialogs.dart';
@@ -74,9 +73,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           height: 40,
                           shape: const CircleBorder(),
                           color: Theme.of(context).colorScheme.primary,
-                          child: const Icon(
+                          child: Icon(
                             Icons.camera_alt_outlined,
-                            color: Colors.black,
+                            color: Theme.of(context).colorScheme.background,
                           ),
                         ),
                       )
@@ -166,7 +165,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               opacity: !showFab ? 1 : 0,
               child: FloatingActionButton.extended(
                 shape: const StadiumBorder(),
-                label: const Text("Logout"),
+                label: Text("Logout",style: TextStyle(color: Theme.of(context).colorScheme.background),),
                 onPressed: () async {
                   Dialogs.showProgressbar(context);
                   await APIs.auth.signOut().then((value) async {
@@ -181,8 +180,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   });
                 },
                 backgroundColor: Theme.of(context).colorScheme.primary,
-                icon: const Icon(
+                icon: Icon(
                   Icons.logout,
+                  color: Theme.of(context).colorScheme.background,
                 ),
               ),
             ),

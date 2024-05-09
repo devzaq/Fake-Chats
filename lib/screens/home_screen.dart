@@ -2,11 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:messages/api/apis.dart';
 import 'package:messages/main.dart';
 import 'package:messages/models/chat_user.dart';
-import 'package:messages/screens/auth/login_screen.dart';
 import 'package:messages/screens/profile_screen.dart';
 import 'package:messages/widgets/chat_user_card.dart';
 
@@ -20,7 +18,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<ChatUser> list = [];
+  List<ChatUser> _list = [];
+  final List<ChatUser> _searchList = [];
+  bool _isSearching = false;
   @override
   void initState() {
     super.initState();
@@ -31,32 +31,59 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        
+        title: _isSearching? 
+        
+        Padding(
+          padding: const EdgeInsets.only(left: 30),
+          child: TextField(
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                        hintText: 'eg. Peter Griffins',
+                      ),
+                    ),
+        )
+
+         : const Text(
           'Messages',
           style: TextStyle(letterSpacing: .5, fontSize: 25),
         ),
-        leading: const Icon(
+        leading: _isSearching? null :const Icon(
           CupertinoIcons.bolt_horizontal_circle,
           size: 30,
           color: Colors.blue,
         ),
         actions: [
           IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.search,
-              )),
-          IconButton(
               onPressed: () {
-                log("List[0]: ${list[0]}");
-                Navigator.push(
-                    context,
-                    CustomPageRoute(child: ProfileScreen(user: APIs.me)));
+                setState(() {
+                  _isSearching = !_isSearching;
+                });
               },
-              icon: const Icon(
-                CupertinoIcons.ellipsis_vertical,
-                size: 18,
-              ))
+              icon: Icon(
+                _isSearching ? CupertinoIcons.clear : Icons.search,
+              )),
+          Visibility(
+            visible: !_isSearching,
+            child: IconButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      CustomPageRoute(child: ProfileScreen(user: APIs.me)));
+                },
+                icon: const Icon( 
+                  CupertinoIcons.ellipsis_vertical,
+                  size: 18,
+                )),
+          ),
+          Visibility(
+            visible: _isSearching,
+            child: const SizedBox(
+              width: 20,
+            ),
+          )
         ],
       ),
       floatingActionButton: Padding(
@@ -64,13 +91,12 @@ class _HomeScreenState extends State<HomeScreen> {
         child: FloatingActionButton(
           onPressed: () async {
             Navigator.push(
-                context,
-                CustomPageRoute(
-                    child: ProfileScreen(user: APIs.me)));
+                context, CustomPageRoute(child: ProfileScreen(user: APIs.me)));
           },
-          backgroundColor: Colors.white,
-          child: const Icon(
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          child: Icon(
             Icons.add,
+            color: Theme.of(context).colorScheme.background,
           ),
         ),
       ),
@@ -86,9 +112,10 @@ class _HomeScreenState extends State<HomeScreen> {
               case ConnectionState.active:
               case ConnectionState.done:
                 final data = snapshot.data?.docs;
-                list = data?.map((e) => ChatUser.fromJson(e.data())).toList() ??
-                    [];
-                if (list.isEmpty) {
+                _list =
+                    data?.map((e) => ChatUser.fromJson(e.data())).toList() ??
+                        [];
+                if (_list.isEmpty) {
                   return const Center(
                       child: Text(
                     "No connections found!",
@@ -99,11 +126,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   ));
                 }
                 return ListView.builder(
-                    itemCount: list.length,
+                    itemCount: _list.length,
                     padding: EdgeInsets.only(top: 10, bottom: mq.height * 0.1),
-                    physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                    physics: const BouncingScrollPhysics(
+                        parent: AlwaysScrollableScrollPhysics()),
                     itemBuilder: (context, index) {
-                      return ChatUserCard(user: list[index]);
+                      return ChatUserCard(user: _list[index]);
                       // return Text('Name: ${list[index].name}');
                     });
             }

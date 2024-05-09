@@ -20,15 +20,14 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(milliseconds: 5000), () {
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge,overlays: [SystemUiOverlay.top]);
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge,
+          overlays: [SystemUiOverlay.top]);
       SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
           systemStatusBarContrastEnforced: true,
           systemNavigationBarColor: Colors.transparent,
-          statusBarColor: Colors.lime,
           systemNavigationBarDividerColor: Colors.transparent,
           systemNavigationBarIconBrightness: Brightness.dark,
-          statusBarIconBrightness: Brightness.dark
-          ));
+          statusBarIconBrightness: Brightness.dark));
       if (APIs.auth.currentUser != null) {
         log('\nUser: ${APIs.auth.currentUser}');
         Navigator.pushReplacement(
@@ -51,24 +50,32 @@ class _SplashScreenState extends State<SplashScreen> {
             width: mq.width * 0.5,
             right: mq.width * 0.25,
             bottom: mq.height * 0.6,
-            child: const CircleAvatar(backgroundImage: AssetImage("images/fakeSplashScreen.png"), radius: 100, ),
+            child: const CircleAvatar(
+              backgroundImage: AssetImage("images/fakeSplashScreen.png"),
+              radius: 100,
+            ),
           ),
           Positioned(
             bottom: mq.height * 0.15,
             width: mq.width,
             child: RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(style: GoogleFonts.roboto(
-                  textStyle: const TextStyle(
-                    backgroundColor: Colors.black,
-                      fontSize: 40,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white)), children: const [
-                TextSpan(text: 'Fake'),
-                TextSpan(text: 'Chats',style: TextStyle(backgroundColor: Colors.amber,color: Colors.black, wordSpacing: 1))
-              ])
-              
-            ),
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                    style: GoogleFonts.roboto(
+                        textStyle: const TextStyle(
+                            backgroundColor: Colors.black,
+                            fontSize: 40,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white)),
+                    children: const [
+                      TextSpan(text: 'Fake'),
+                      TextSpan(
+                          text: 'Chats',
+                          style: TextStyle(
+                              backgroundColor: Colors.amber,
+                              color: Colors.black,
+                              wordSpacing: 1))
+                    ])),
           )
         ],
       ),
