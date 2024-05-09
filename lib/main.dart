@@ -7,7 +7,6 @@ import 'firebase_options.dart';
 
 late Size mq;
 void main() {
-
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   SystemChrome.setPreferredOrientations(
@@ -24,17 +23,17 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Fake Chats',
       theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Theme.of(context).colorScheme.primary),
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: Theme.of(context).colorScheme.primary),
           useMaterial3: true,
           appBarTheme: AppBarTheme(
               centerTitle: true,
               titleTextStyle: GoogleFonts.blackOpsOne(
-                textStyle: const TextStyle(
+                  textStyle: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.normal,
                 // fontSize: 100.0,
