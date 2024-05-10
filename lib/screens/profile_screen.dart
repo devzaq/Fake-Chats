@@ -67,14 +67,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         bottom: 5,
                         right: 0,
                         child: MaterialButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            _showBottomSheet();
+                          },
                           elevation: 1,
-                          minWidth: 20,
-                          height: 40,
+                          minWidth: 0,
+                          height: 45,
                           shape: const CircleBorder(),
                           color: Theme.of(context).colorScheme.primary,
                           child: Icon(
                             Icons.camera_alt_outlined,
+                            size: 25,
                             color: Theme.of(context).colorScheme.background,
                           ),
                         ),
@@ -165,7 +168,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               opacity: !showFab ? 1 : 0,
               child: FloatingActionButton.extended(
                 shape: const StadiumBorder(),
-                label: Text("Logout",style: TextStyle(color: Theme.of(context).colorScheme.background),),
+                label: Text(
+                  "Logout",
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.background),
+                ),
                 onPressed: () async {
                   Dialogs.showProgressbar(context);
                   await APIs.auth.signOut().then((value) async {
@@ -190,5 +197,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
     );
+  }
+
+  void _showBottomSheet() {
+    showModalBottomSheet(
+        context: context,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+        builder: (builder) {
+          return ListView(
+            shrinkWrap: true,
+            padding:
+                EdgeInsets.only(top: mq.height * 0.03, bottom: mq.height * 0.1),
+            children: [
+              const Text(
+                "Pick profile picture",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+              ),
+              SizedBox(height: mq.height*0.02,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: const CircleBorder(),
+                          backgroundColor: Colors.white,
+                          fixedSize: const Size(120, 120)),
+                      onPressed: () {},
+                      child: Image.asset('images/image-gallery.png')),
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: const CircleBorder(),
+                          backgroundColor: Colors.white,
+                          fixedSize: const Size(120, 120)),
+                      onPressed: () {},
+                      child: Image.asset('images/camera.png'))
+                ],
+              )
+            ],
+          );
+        });
   }
 }
