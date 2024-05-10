@@ -56,7 +56,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 File(_image!),
                                 width: 175.0,
                                 height: 175.0,
-                                fit: BoxFit.fill,
+                                fit: BoxFit.cover,
                               ),
                             )
                           : CachedNetworkImage(
