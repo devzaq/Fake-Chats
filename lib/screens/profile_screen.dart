@@ -1,9 +1,11 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:messages/api/apis.dart';
 import 'package:messages/helper/dialogs.dart';
 import 'package:messages/main.dart';
@@ -20,6 +22,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final _formKey = GlobalKey<FormState>();
+  String? _image;
   @override
   Widget build(BuildContext context) {
     bool showFab = MediaQuery.of(context).viewInsets.bottom != 0;
@@ -46,23 +49,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   Stack(
                     children: [
-                      CachedNetworkImage(
-                        // alignment: Alignment.center,
-                        imageUrl: widget.user.image!,
-                        imageBuilder: (context, imageProvider) => Container(
-                          width: 175.0,
-                          height: 175.0,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                                image: imageProvider, fit: BoxFit.fill),
-                          ),
-                        ),
-                        placeholder: (context, url) =>
-                            const CircularProgressIndicator(),
-                        errorWidget: (context, url, error) =>
-                            const Icon(CupertinoIcons.person),
-                      ),
+                      _image != null
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(100),
+                              child: Image.file(
+                                File(_image!),
+                                width: 175.0,
+                                height: 175.0,
+                                fit: BoxFit.fill,
+                              ),
+                            )
+                          : CachedNetworkImage(
+                              // alignment: Alignment.center,
+                              imageUrl: widget.user.image!,
+                              imageBuilder: (context, imageProvider) =>
+                                  Container(
+                                width: 175.0,
+                                height: 175.0,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                      image: imageProvider, fit: BoxFit.cover),
+                                ),
+                              ),
+                              placeholder: (context, url) =>
+                                  const CircularProgressIndicator(),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(CupertinoIcons.person),
+                            ),
                       Positioned(
                         bottom: 5,
                         right: 0,
@@ -204,36 +218,92 @@ class _ProfileScreenState extends State<ProfileScreen> {
         context: context,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+                topLeft: Radius.circular(30), topRight: Radius.circular(30))),
         builder: (builder) {
           return ListView(
             shrinkWrap: true,
-            padding:
-                EdgeInsets.only(top: mq.height * 0.03, bottom: mq.height * 0.1),
+            padding: EdgeInsets.only(
+                top: mq.height * 0.03, bottom: mq.height * 0.08),
             children: [
               const Text(
                 "Pick profile picture",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
               ),
-              SizedBox(height: mq.height*0.02,),
+              SizedBox(
+                height: mq.height * 0.02,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          shape: const CircleBorder(),
-                          backgroundColor: Colors.white,
-                          fixedSize: const Size(120, 120)),
-                      onPressed: () {},
-                      child: Image.asset('images/image-gallery.png')),
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          shape: const CircleBorder(),
-                          backgroundColor: Colors.white,
-                          fixedSize: const Size(120, 120)),
-                      onPressed: () {},
-                      child: Image.asset('images/camera.png'))
+                  Column(
+                    children: [
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: const CircleBorder(),
+                              backgroundColor: Colors.white,
+                              fixedSize: const Size(100, 100)),
+                          onPressed: () async {
+                            final ImagePicker picker = ImagePicker();
+                            // Pick an image.
+                            final XFile? image = await picker.pickImage(
+                                source: ImageSource.gallery);
+                            if (image != null) {
+                              setState(() {
+                                _image = image.path;
+                              }); 
+                              log('Image Path: ${image.path} --mimetype: ${image.mimeType}');
+                              if (!mounted) return;
+                              Navigator.pop(context);
+                            }
+                          },
+                          child: Image.asset('images/image-gallery.png')),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 10),
+                        child: Text(
+                          "Gallery",
+                          style: TextStyle(
+                              fontSize: 15,
+                              letterSpacing: 1,
+                              fontWeight: FontWeight.w300),
+                        ),
+                      )
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: const CircleBorder(),
+                              backgroundColor: Colors.white,
+                              fixedSize: const Size(100, 100)),
+                          onPressed: () async {
+                            final ImagePicker picker = ImagePicker();
+                            // Pick an image.
+                            final XFile? image = await picker.pickImage(
+                                source: ImageSource.camera);
+                            if (image != null) {
+                              setState(() {
+                                _image = image.path;
+                              }); 
+                              log('Image Path: ${image.path}');
+                              if (!mounted) return;
+                              Navigator.pop(context);
+                            }
+                          },
+                          child: Image.asset('images/camera.png')),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 10),
+                        child: Text(
+                          "Camera",
+                          style: TextStyle(
+                              fontSize: 15,
+                              letterSpacing: 1,
+                              fontWeight: FontWeight.w300),
+                        ),
+                      )
+                    ],
+                  )
                 ],
               )
             ],

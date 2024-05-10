@@ -52,6 +52,10 @@
 	<dict>
 		<key>CFBundleTypeRole</key>
 		<string>Editor</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Photo Library permission required.</string>
+		<key>NSCameraUsageDescription</key>
+		<string>Camera Usage Description in the visual editor.</string>
 		<key>CFBundleURLSchemes</key>
 		<array>
 			<string>com.googleusercontent.apps.1003135821325-vt8ipb0jl50d7b12cltkfjo17q2dm1bk</string>
