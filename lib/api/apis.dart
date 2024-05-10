@@ -2,11 +2,13 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:messages/models/chat_user.dart';
 
 class APIs {
   static final auth = FirebaseAuth.instance;
   static final firestore = FirebaseFirestore.instance;
+  final storageRef = FirebaseStorage.instance.ref();
   static get user => auth.currentUser!;
   static Future<bool> userExists() async {
     return (await firestore.collection('users').doc(user.uid).get()).exists;
