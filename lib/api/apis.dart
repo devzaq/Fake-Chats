@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,8 +9,8 @@ import 'package:messages/models/chat_user.dart';
 class APIs {
   static final auth = FirebaseAuth.instance;
   static final firestore = FirebaseFirestore.instance;
-  final storageRef = FirebaseStorage.instance.ref();
-  static get user => auth.currentUser!;
+  static final storageRef = FirebaseStorage.instance.ref();
+  static User get user => auth.currentUser!;
   static Future<bool> userExists() async {
     return (await firestore.collection('users').doc(user.uid).get()).exists;
   }
@@ -57,5 +58,22 @@ class APIs {
         .collection('users')
         .doc(user.uid)
         .update({'name': me.name, 'about': me.about});
+  }
+
+  static Future<void> updateProfilePicture(File file) async {
+    final imageExt = file.path.split('.').last;
+    final imageRef = storageRef.child('profile_pictures/${user.uid}.$imageExt');
+    await imageRef
+        .putFile(file, SettableMetadata(contentType: "image/$imageExt"))
+        .then((snapshot) async {
+      // me.image = await snapshot.ref.getDownloadURL();
+      // log("imageURL: ${me.image}");
+      me.image = await imageRef.getDownloadURL();
+      log("data transferred: ${snapshot.bytesTransferred}");
+      await firestore
+          .collection('users')
+          .doc(user.uid)
+          .update({'image': me.image});
+    });
   }
 }
