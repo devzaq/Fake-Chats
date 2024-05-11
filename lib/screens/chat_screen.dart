@@ -9,6 +9,9 @@ import 'package:flutter/widgets.dart';
 import 'package:messages/api/apis.dart';
 import 'package:messages/main.dart';
 import 'package:messages/models/chat_user.dart';
+import 'package:messages/widgets/message_card.dart';
+
+import '../models/message.dart';
 
 class ChatScreen extends StatefulWidget {
   final ChatUser user;
@@ -19,6 +22,8 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  List<Message> _list = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,6 +31,7 @@ class _ChatScreenState extends State<ChatScreen> {
         automaticallyImplyLeading: false,
         flexibleSpace: _appbar(),
       ),
+      // backgroundColor: Color.fromARGB(255, 234, 248, 200),
       body: SafeArea(
         child: Column(
           children: [
@@ -42,9 +48,25 @@ class _ChatScreenState extends State<ChatScreen> {
                       case ConnectionState.active:
                       case ConnectionState.done:
                         final data = snapshot.data?.docs;
-                        log("Message:  ${jsonEncode(data![0].data())}");
+                        // log("Message:  ${jsonEncode(data![0].data())}");
                         // _list = data ?.map((e) => ChatUser.fromJson(e.data())).toList() ?? [];
-                        final _list = [];
+                        // final _list = ["hi","hello"];
+                        _list.clear();
+                        _list.add(Message(
+                            toId: 'xyz',
+                            msg: 'Hi',
+                            read: '',
+                            sent: '12:35 AM',
+                            type: Type.text,
+                            fromId: APIs.user.uid));
+                        _list.add(Message(
+                            toId: APIs.user.uid,
+                            msg: 'Hello',
+                            read: '',
+                            sent: '12:36 AM',
+                            type: Type.text,
+                            fromId: 'xyz'));
+
                         if (_list.isEmpty) {
                           return Center(
                               child: Text(
@@ -62,7 +84,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             physics: const BouncingScrollPhysics(
                                 parent: AlwaysScrollableScrollPhysics()),
                             itemBuilder: (context, index) {
-                              return Text('Message : ${_list[index]}');
+                              return MessageCard(message: _list[index]);
                             });
                     }
                   }),
@@ -204,7 +226,7 @@ class _ChatScreenState extends State<ChatScreen> {
             child: Icon(
               Icons.send,
               color: Theme.of(context).colorScheme.background,
-              size: 25,
+              size: 28,
             ),
           ),
         ],
