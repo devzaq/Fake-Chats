@@ -76,4 +76,11 @@ class APIs {
           .update({'image': me.image});
     });
   }
+
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllMessages() {
+    return firestore
+        .collection('messages')
+        .snapshots();
+  }
+
 }
