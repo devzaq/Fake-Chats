@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:messages/main.dart';
 import 'package:messages/models/chat_user.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -20,6 +21,9 @@ class _ChatScreenState extends State<ChatScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         flexibleSpace: _appbar(),
+      ),
+      body: Column(
+        children: [_chatInput()],
       ),
     );
   }
@@ -86,6 +90,77 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _chatInput() {
+    return Container(
+      alignment: Alignment.center,
+      // width: mq.width*0.95,
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+      // color: Colors.amber,
+      child: Row(
+        // crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Expanded(
+            child: Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25)),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.emoji_emotions,
+                        color: Colors.blueGrey,
+                        size: 26,
+                      )),
+                  Expanded(
+                      child: TextField(
+                    keyboardType: TextInputType.multiline,
+                    minLines: 1,
+                    maxLines: 6,
+                    decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.all(0),
+                        border: InputBorder.none,
+                        hintText: "Message...",
+                        hintStyle: TextStyle(
+                          color: Colors.blueGrey.shade300,
+                        )),
+                  )),
+                  IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.image,
+                        color: Colors.blueGrey,
+                        size: 26,
+                      )),
+                  IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.camera_alt_rounded,
+                        color: Colors.blueGrey,
+                        size: 26,
+                      )),
+                ],
+              ),
+            ),
+          ),
+          MaterialButton(
+            onPressed: () {},
+            padding: const EdgeInsets.all(10),
+            minWidth: 0,
+            color: Theme.of(context).colorScheme.secondary,
+            shape: const CircleBorder(),
+            child: Icon(
+              Icons.send,
+              color: Theme.of(context).colorScheme.background,
+              size: 25,
+            ),
+          )
+        ],
       ),
     );
   }
