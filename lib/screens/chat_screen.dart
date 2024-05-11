@@ -22,8 +22,49 @@ class _ChatScreenState extends State<ChatScreen> {
         automaticallyImplyLeading: false,
         flexibleSpace: _appbar(),
       ),
-      body: Column(
-        children: [_chatInput()],
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: StreamBuilder(
+                  stream: null,
+                  builder: (context, snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.waiting:
+                      case ConnectionState.none:
+                        // return const Center(
+                        //   child: CircularProgressIndicator(),
+                        // );
+                      case ConnectionState.active:
+                      case ConnectionState.done:
+                        // final data = snapshot.data?.docs;
+                        // _list = data ?.map((e) => ChatUser.fromJson(e.data())).toList() ?? [];
+                        final _list = [];
+                        if (_list.isEmpty) {
+                          return Center(
+                              child: Text(
+                            "Say Hi 👋 to ${widget.user.name}.",
+                            style: const TextStyle(
+                              fontSize: 25,
+                            ),
+                            textAlign: TextAlign.justify,
+                          ));
+                        }
+                        return ListView.builder(
+                            itemCount: _list.length,
+                            padding:
+                                EdgeInsets.only(top: 10, bottom: mq.height * 0.1),
+                            physics: const BouncingScrollPhysics(
+                                parent: AlwaysScrollableScrollPhysics()),
+                            itemBuilder: (context, index) {
+                              return Text('Message : ${_list[index]}');
+                            });
+                    }
+                  }),
+            ),
+            _chatInput()
+          ],
+        ),
       ),
     );
   }
@@ -101,10 +142,11 @@ class _ChatScreenState extends State<ChatScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
       // color: Colors.amber,
       child: Row(
-        // crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Expanded(
             child: Card(
+              margin: const EdgeInsets.symmetric(vertical: 0,horizontal: 5),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(25)),
               child: Row(
@@ -159,7 +201,7 @@ class _ChatScreenState extends State<ChatScreen> {
               color: Theme.of(context).colorScheme.background,
               size: 25,
             ),
-          )
+          ),
         ],
       ),
     );
