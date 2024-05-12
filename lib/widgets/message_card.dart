@@ -30,9 +30,17 @@ class _MessageCardState extends State<MessageCard> {
       children: [
         Row(
           children: [
-            const SizedBox(width: 15,),
-            const Icon(Icons.done_all_rounded,color: Colors.blue,size: 20,),
-            const SizedBox(width: 4,),
+            const SizedBox(
+              width: 15,
+            ),
+            const Icon(
+              Icons.done_all_rounded,
+              color: Colors.blue,
+              size: 20,
+            ),
+            const SizedBox(
+              width: 4,
+            ),
             Text(
               widget.message.sent,
               style: const TextStyle(fontSize: 13, color: Colors.black54),
@@ -42,17 +50,18 @@ class _MessageCardState extends State<MessageCard> {
         Flexible(
           child: Container(
             decoration: BoxDecoration(
-              border:
-                  Border.all(color: Color.fromARGB(66, 37, 211, 101), width: 2),
+              border: Border.all(
+                  color: const Color.fromARGB(66, 37, 211, 101), width: 2),
               color: const Color.fromRGBO(220, 248, 198, 1),
               borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20)),
+                  topLeft: Radius.circular(14),
+                  bottomLeft: Radius.circular(14),
+                  bottomRight: Radius.circular(14)),
             ),
-            padding: EdgeInsets.symmetric(horizontal: mq.width * .03,vertical: mq.width*0.02),
+            padding: EdgeInsets.symmetric(
+                horizontal: mq.width * .03, vertical: mq.width * 0.02),
             margin: EdgeInsets.symmetric(
-                horizontal: mq.width * 0.04, vertical: mq.height * 0.01),
+                horizontal: mq.width * 0.04, vertical: mq.height * 0.002),
             child: Text(
               widget.message.msg,
               style: const TextStyle(fontSize: 16, color: Colors.black87),
@@ -70,17 +79,18 @@ class _MessageCardState extends State<MessageCard> {
         Flexible(
           child: Container(
             decoration: BoxDecoration(
-              color: Color.fromARGB(82, 236, 229, 221),
+              color: const Color.fromARGB(82, 236, 229, 221),
               border: Border.all(
                   color: const Color.fromRGBO(236, 229, 221, 1), width: 2),
               borderRadius: const BorderRadius.only(
-                  topRight: Radius.circular(20),
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20)),
+                  topRight: Radius.circular(14),
+                  bottomLeft: Radius.circular(14),
+                  bottomRight: Radius.circular(14)),
             ),
-           padding: EdgeInsets.symmetric(horizontal: mq.width * .03,vertical: mq.width*0.02),
+            padding: EdgeInsets.symmetric(
+                horizontal: mq.width * .03, vertical: mq.width * 0.02),
             margin: EdgeInsets.symmetric(
-                horizontal: mq.width * 0.04, vertical: mq.height * 0.01),
+                horizontal: mq.width * 0.04, vertical: mq.height * 0.002),
             child: Text(
               widget.message.msg,
               style: const TextStyle(fontSize: 16, color: Colors.black87),
