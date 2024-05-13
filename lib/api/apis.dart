@@ -1,8 +1,8 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:messages/models/chat_user.dart';
 import 'package:messages/models/message.dart';
@@ -78,7 +78,7 @@ class APIs {
   static Stream<QuerySnapshot<Map<String, dynamic>>> getAllMessages(
       ChatUser user) {
     return firestore
-        .collection('chats/${getConversationID(user.id!)}/messages/')
+        .collection('chats/${getConversationID(user.id)}/messages/')
         .snapshots();
   }
 

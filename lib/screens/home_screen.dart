@@ -63,10 +63,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       onChanged: (value) {
                         _searchList.clear();
                         for (var i in _list) {
-                          if ((i.name!
+                          if ((i.name
                                       .toLowerCase()
                                       .contains(value.toLowerCase()) ||
-                                  i.email!
+                                  i.email
                                       .toLowerCase()
                                       .contains(value.toLowerCase())) &&
                               true) {

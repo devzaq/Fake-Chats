@@ -1,11 +1,6 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:messages/api/apis.dart';
 import 'package:messages/main.dart';
 import 'package:messages/models/chat_user.dart';
@@ -24,7 +19,6 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   List<Message> _list = [];
   final _textController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

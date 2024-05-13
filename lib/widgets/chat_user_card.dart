@@ -1,12 +1,12 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:messages/api/apis.dart';
+import 'package:messages/helper/my_date_util.dart';
 import 'package:messages/main.dart';
 import 'package:messages/models/chat_user.dart';
 import 'package:messages/models/message.dart';
+
 import '../helper/custom_page_route.dart';
 import '../screens/chat_screen.dart';
 
@@ -68,18 +68,24 @@ class _ChatUserCardState extends State<ChatUserCard> {
                           _message != null ? _message!.msg : widget.user.about,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis),
-                      trailing: Container(
-                        width: 15,
-                        height: 15,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.green[400],
-                        ),
-                      ),
-                      // trailing: const Text(
-                      //   "15:00",
-                      //   style: TextStyle(color: Colors.black54,fontSize: 15),
-                      // ),
+                      trailing: _message == null
+                          ? null
+                          : _message!.read.isEmpty &&
+                                  _message!.fromId != APIs.user.uid
+                              ? Container(
+                                  width: 15,
+                                  height: 15,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.green[400],
+                                  ),
+                                )
+                              : Text(
+                                  MyDateUtil.getFormattedTime(
+                                      context: context, time: _message!.sent),
+                                  style: const TextStyle(
+                                      color: Colors.black54, fontSize: 15),
+                                ),
                     );
                   }),
             )),
