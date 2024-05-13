@@ -105,4 +105,11 @@ class APIs {
         .collection('chats/${getConverstationId(chatUser.id!)}/messages/');
     await ref.doc(time).set(message.toJson());
   }
+
+  static Future<void> updateMessageReadStatus(Message msg) async {
+    firestore
+        .collection('chats/${getConverstationId(msg.fromId)}/messages/')
+        .doc(msg.sent)
+        .update({'read': DateTime.now().millisecondsSinceEpoch.toString()});
+  }
 }

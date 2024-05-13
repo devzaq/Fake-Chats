@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -34,12 +36,17 @@ class _MessageCardState extends State<MessageCard> {
             const SizedBox(
               width: 15,
             ),
-            if (widget.message.read.isNotEmpty)
-              const Icon(
-                Icons.done_all_rounded,
-                color: Colors.blue,
-                size: 20,
-              ),
+            (widget.message.read.isNotEmpty)
+                ? const Icon(
+                    Icons.done_all_rounded,
+                    color: Colors.blue,
+                    size: 20,
+                  )
+                : const Icon(
+                    Icons.done,
+                    color: Colors.grey,
+                    size: 20,
+                  ),
             const SizedBox(
               width: 4,
             ),
@@ -76,6 +83,11 @@ class _MessageCardState extends State<MessageCard> {
   }
 
   Widget _greyMessage() {
+    if (widget.message.read.isEmpty) {
+      APIs.updateMessageReadStatus(widget.message);
+      log("Message Read Updated.🥲");
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
