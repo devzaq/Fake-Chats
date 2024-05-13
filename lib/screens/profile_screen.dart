@@ -61,7 +61,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             )
                           : CachedNetworkImage(
                               // alignment: Alignment.center,
-                              imageUrl: widget.user.image!,
+                              imageUrl: widget.user.image,
                               imageBuilder: (context, imageProvider) =>
                                   Container(
                                 width: 175.0,
@@ -102,7 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     height: mq.height * 0.03,
                   ),
                   Text(
-                    widget.user.email!,
+                    widget.user.email,
                     style: const TextStyle(color: Colors.black, fontSize: 16),
                   ),
                   SizedBox(

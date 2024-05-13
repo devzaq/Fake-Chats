@@ -101,7 +101,7 @@ class _ChatScreenState extends State<ChatScreen> {
               child: Row(
                 children: [
                   CachedNetworkImage(
-                    imageUrl: widget.user.image!,
+                    imageUrl: widget.user.image,
                     imageBuilder: (context, imageProvider) => Container(
                       width: 40.0,
                       height: 40.0,
@@ -126,7 +126,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.user.name ?? "",
+                        widget.user.name,
                         style: const TextStyle(
                             fontSize: 20,
                             color: Colors.black87,
