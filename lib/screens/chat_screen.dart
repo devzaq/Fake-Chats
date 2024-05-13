@@ -1,11 +1,14 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:messages/api/apis.dart';
 import 'package:messages/main.dart';
 import 'package:messages/models/chat_user.dart';
 import 'package:messages/widgets/message_card.dart';
-
+import 'package:flutter/foundation.dart' as foundation;
 import '../models/message.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -18,6 +21,8 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   List<Message> _list = [];
+  bool _emojiShowing = false;
+  final _scrollController = ScrollController();
   final _textController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -26,7 +31,7 @@ class _ChatScreenState extends State<ChatScreen> {
         automaticallyImplyLeading: false,
         flexibleSpace: _appbar(),
       ),
-      // backgroundColor: Color.fromARGB(255, 234, 248, 200),
+      backgroundColor: Color.fromARGB(255, 234, 248, 200),
       body: SafeArea(
         child: Column(
           children: [
@@ -71,7 +76,8 @@ class _ChatScreenState extends State<ChatScreen> {
                     }
                   }),
             ),
-            _chatInput()
+            _chatInput(),
+            _emojiPickerDialog(),
           ],
         ),
       ),
@@ -162,7 +168,11 @@ class _ChatScreenState extends State<ChatScreen> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          _emojiShowing = !_emojiShowing;
+                        });
+                      },
                       icon: const Icon(
                         Icons.emoji_emotions,
                         color: Colors.blueGrey,
@@ -171,6 +181,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   Expanded(
                       child: TextField(
                     controller: _textController,
+                    scrollController: _scrollController,
                     keyboardType: TextInputType.multiline,
                     minLines: 1,
                     maxLines: 6,
@@ -218,6 +229,33 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _emojiPickerDialog() {
+    return Offstage(
+      offstage: !_emojiShowing,
+      child: SizedBox(
+        height: 250,
+        child: EmojiPicker(
+          textEditingController: _textController,
+          scrollController: _scrollController,
+          config: Config(
+            // height: 256,
+            checkPlatformCompatibility: true,
+            emojiViewConfig: EmojiViewConfig(
+              emojiSizeMax: 28 * (Platform.isIOS ? 1.2 : 1.0),
+              columns: 7,
+              recentsLimit: 20,
+            ),
+            // swapCategoryAndBottomBar: false,
+            skinToneConfig: const SkinToneConfig(),
+            categoryViewConfig: const CategoryViewConfig(),
+            bottomActionBarConfig: const BottomActionBarConfig(),
+            searchViewConfig: const SearchViewConfig(),
+          ),
+        ),
       ),
     );
   }
