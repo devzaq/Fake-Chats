@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:messages/api/apis.dart';
+import 'package:messages/helper/my_date_util.dart';
 import 'package:messages/main.dart';
 
 import '../models/message.dart';
@@ -33,16 +34,18 @@ class _MessageCardState extends State<MessageCard> {
             const SizedBox(
               width: 15,
             ),
-            const Icon(
-              Icons.done_all_rounded,
-              color: Colors.blue,
-              size: 20,
-            ),
+            if (widget.message.read.isNotEmpty)
+              const Icon(
+                Icons.done_all_rounded,
+                color: Colors.blue,
+                size: 20,
+              ),
             const SizedBox(
               width: 4,
             ),
             Text(
-              widget.message.sent,
+              MyDateUtil.getFormattedTime(
+                  context: context, time: widget.message.sent),
               style: const TextStyle(fontSize: 13, color: Colors.black54),
             ),
           ],
@@ -100,7 +103,8 @@ class _MessageCardState extends State<MessageCard> {
         Padding(
           padding: const EdgeInsets.only(right: 15),
           child: Text(
-            widget.message.sent,
+            MyDateUtil.getFormattedTime(
+                context: context, time: widget.message.sent),
             style: const TextStyle(fontSize: 13, color: Colors.black54),
           ),
         ),
